@@ -1,0 +1,57 @@
+# > ------------------ <
+# >  Alacritty Config  <
+# > ------------------ <
+#
+# Author: Tomasz Dyrka
+# ====================
+
+
+# ---------------
+# GENERAL SECTION
+# ---------------
+
+[general]
+
+import	= ["~/.config/alacritty/atelierforest.toml"]
+
+working_directory = "/home/user"
+
+
+# --------------
+# WINDOW SECTION
+# --------------
+
+[window]
+
+padding	= { x = 10, y = 10 }
+
+#opacity	= 0.95
+#blur	= true
+
+title		= "Terminal"
+dynamic_title 	= false
+
+decorations = "Full"
+decorations_theme_variant = "Dark"
+
+
+# ----------------
+# SCROLING SECTION
+# ----------------
+
+[scrolling]
+
+history    = 5000
+multiplier = 3
+
+
+# ------------
+# FONT SECTION
+# ------------
+
+[font]
+
+normal = { family = "CommitMono Nerd Font Mono", style = "Regular" }
+size   = 14
+
+

@@ -1,5 +1,8 @@
 -- settings
 require("settings")
 
+-- remap keys
+require("remap")
+
 -- colours
-require("colourscheme")
+vim.cmd([[colorscheme gruvbox]])

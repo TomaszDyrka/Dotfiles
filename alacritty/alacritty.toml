@@ -3,7 +3,7 @@
 # > ------------------ <
 #
 # Author: Tomasz Dyrka
-# ====================
+# ======================
 
 
 # ---------------
@@ -12,7 +12,7 @@
 
 [general]
 
-import	= ["~/.config/alacritty/atelierforest.toml"]
+import = ["./gruvbox.toml"]
 
 working_directory = "/home/user"
 

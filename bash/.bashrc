@@ -1,5 +1,8 @@
 # .bashrc
 
+# Source directory
+BASHRC_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
@@ -11,25 +14,38 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
 fi
 export PATH
 
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
 
-# User specific aliases and functions
-# ^ not in use, life is too short to learn bash
-if [ -d ~/.bashrc.d ]; then
-    for rc in ~/.bashrc.d/*; do
-        if [ -f "$rc" ]; then
-            . "$rc"
-        fi
-    done
+# ultra secret aliases from untracked file (top secret)
+
+if [ -f "$BASHRC_DIR/.bash_aliases" ]; then
+    . "$BASHRC_DIR/.bash_aliases"
 fi
-unset rc
 
-# aliases
+
+# Commitable aliases
 alias lsl='echo;ls -AC'
 alias dev='cd ~/Development'
 
-#functions
+
+# Functions
+tmux-kill-all() {
+    # map every tmux session entry to array
+    mapfile -t sessions < <(tmux ls | cut -d: -f1)
+
+    if [ ${#sessions[@]} -lt 1 ]; then
+        echo "There are no sessions!"
+        return 1
+    fi
+
+    count=0
+    for name in "${sessions[@]}"; do
+        tmux kill-session -t "$name"
+        count=$((count + 1))
+    done
+
+    echo "Done! Total deleted sessions: $count"
+}
+
 mvf() {
     local source="$1"
     local dest="$2"

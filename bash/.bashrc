@@ -25,7 +25,8 @@ fi
 # Commitable aliases
 alias lsl='echo;ls -AC'
 alias dev='cd ~/Development'
-
+alias shd='systemctl poweroff'
+alias cls='clear'
 
 # Functions
 tmux-kill-all() {
@@ -68,3 +69,4 @@ mvf() {
 }
 
 eval "$(starship init bash)"
+eval "$(uv generate-shell-completion bash)"

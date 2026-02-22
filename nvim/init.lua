@@ -5,4 +5,13 @@ require("settings")
 require("remap")
 
 -- colours
-vim.cmd([[colorscheme gruvbox]])
+require('kanagawa').setup({
+    theme = "dragon",        
+    background = {           
+        dark = "dragon",
+        light = "lotus"
+    },
+})
+
+vim.cmd("colorscheme kanagawa")
+--vim.cmd([[colorscheme gruvbox]])

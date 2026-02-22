@@ -12,7 +12,7 @@
 
 [general]
 
-import = ["./gruvbox.toml"]
+import = ["./kanagawa-dragon.toml"]
 
 working_directory = "/home/user"
 
@@ -51,7 +51,7 @@ multiplier = 3
 
 [font]
 
-normal = { family = "CommitMono Nerd Font Mono", style = "Regular" }
+normal = { family = "FiraCode Nerd Font Mono", style = "Regular" }
 size   = 14
 
 

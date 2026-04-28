@@ -75,6 +75,7 @@ function create_symlink()
 
     ${cmd_ln_config} || {
         printf "Cannot create symlink\n"
+        remove_lock "${cmd_unlocking}"
         exit 5
     }
 }
@@ -87,9 +88,10 @@ function check_and_delete_symlink()
     local name="$3"
 
     if [ -L "${target_link}" ] ; then
-        printf "-!- Link for ${name} exists! Replacing it now...\n"
+        printf "[!] Link for ${name} exists! Replacing it now...\n"
         ${cmd_rm} "${target_link}" || {
             printf "Cannot delete symlink\n"
+            remove_lock "${cmd_unlocking}"
             exit 6
         }
     fi
@@ -125,10 +127,10 @@ function main()
     done
 
     ## now the same for bash
-    if [ -F "${BASH_HOME}" ] ; then
-        printf "-!- .bashrc exists! Replacing it now..."
+    if [ -f "${BASH_HOME}" ] ; then
+        printf "[!] .bashrc exists! Replacing it now..."
         ${cmd_rm} "${BASH_HOME}" || {
-            printf "Cannot delete symlink\n"
+            printf "Cannot delete symlink\n" >&2
             exit 6
         }
     fi
@@ -144,16 +146,17 @@ function main()
 
 ## menu
 clear
-printf "============================\n"
-printf "    DOTFILES: by T.Dyrka\n"
-printf "============================\n"
+printf "==============================\n"
+printf "     DOTFILES: by T.Dyrka\n"
+printf "==============================\n"
 printf "1. Start symlinking from:\n"
 printf "${DOTFILES_DIR}\n"
-printf "2. Quit\n"
+printf "2. Quit\n\n"
     
 
 while true; do
-    read -n 1 -p "\n[1/2]: " choice
+    read -n 1 -p "[1/2]: " choice
+    printf "\n"
 
     case $choice in
         1)

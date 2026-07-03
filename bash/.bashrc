@@ -16,17 +16,27 @@ export PATH
 
 
 # ultra secret aliases from untracked file (top secret)
-
 if [ -f "$BASHRC_DIR/.bash_aliases" ]; then
     . "$BASHRC_DIR/.bash_aliases"
 fi
 
+# bash completion
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+# Environmental variables
+export HISTSIZE=1000
 
 # Commitable aliases
-alias lsl='echo;ls -AC'
+alias ll='ls -AC'
 alias dev='cd ~/Development'
 alias shd='systemctl poweroff'
 alias cls='clear'
+alias upgrade='sudo apt update && sudo apt upgrade'
+alias ..='cd ..'
+alias ...='cd ..; cd ..'
+alias djn='cd ~/Development/BookingEngine/'
 
 # Functions
 tmux-kill-all() {
@@ -68,5 +78,13 @@ mvf() {
     echo "Files moved from '$source' to '$dest'."
 }
 
+edit() {
+    vim $1
+}
+
+# Evals
 eval "$(starship init bash)"
 eval "$(uv generate-shell-completion bash)"
+
+# k8s completion
+source <(kubectl completion bash)

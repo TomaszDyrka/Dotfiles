@@ -10,7 +10,12 @@ if [ -z "${1:-}" ]; then
     exit 1
 fi
 
+
+
+## -------------------
 ## consts and commands
+## -------------------
+
 DOTFILES_DIR="$1"
 CONFIG_DIR="${HOME}/.config/"
 CONFIG_NAMES=("alacritty" "nvim" "starship")
@@ -21,6 +26,20 @@ CONFIG_NAMES=("alacritty" "nvim" "starship")
 BASH_DOTFILES="${DOTFILES_DIR}/bash/.bashrc"
 BASH_HOME="${HOME}/.bashrc"
 ## -----    end    -----
+
+## --- programs part ---
+PROGRAMS_FILE="./programs.sh"
+if [ -f "${PROGRAMS_FILE}" ] ; then
+    . ./programs.sh
+else
+    printf "[!] No programs file present!"
+    printf "Note that nothing will happen if you select 'Install' option"
+    printf "Press key to continue..."
+    read -r -n 1 -s > /dev/null  
+    
+    TO_INSTALL=()
+fi
+## ---      end      ---
 
 LOCK_STATUS="/var/lock/dotfiles-script-lock-dir"
 cmd_locking="mkdir ${LOCK_STATUS}"
@@ -97,8 +116,8 @@ function check_and_delete_symlink()
     fi
 }
 
-## main function
-function main()
+## installing dotfiles function
+function dotfiles()
 {
     ## for panic if something happens during script execution
     trap 'remove_lock "${cmd_unlocking}"; exit 130' SIGINT SIGTERM
@@ -141,7 +160,16 @@ function main()
     remove_lock "${cmd_unlocking}"
 
     printf "Files has been symlinked!"
-    exit 0
+}
+
+function programs()
+{ 
+    for func in "${TO_INSTALL[@]}" ; do
+        ${func}
+        printf "[!] Installed ${func} correctly!\n"
+    done
+    
+    printf "Everything went good!\n"
 }
 
 ## menu
@@ -151,24 +179,30 @@ printf "     DOTFILES: by T.Dyrka\n"
 printf "==============================\n"
 printf "1. Start symlinking from:\n"
 printf "${DOTFILES_DIR}\n"
-printf "2. Quit\n\n"
+printf "2. Install programs:\n"
+printf "${TO_INSTALL[*]}"
+printf "3. Quit\n\n"
     
 
 while true; do
-    read -n 1 -p "[1/2]: " choice
+    read -r -n 1 -p "[1/2/3]: " choice
     printf "\n"
 
     case $choice in
         1)
-            printf "Starting script...\n"
-            main
+            printf "Symlinking...\n"
+            dotfiles
             ;;
         2)
+            printf "Installing...\n"
+            programs 
+            ;;
+        3)
             printf "Quitting...\n"
             exit 0
             ;;
         *)
-            printf "Error: Are you sure you picked 1 or 2?\n"
+            printf "Error: Pick one option! [1/2/3]\n"
             ;;
     esac
 done
